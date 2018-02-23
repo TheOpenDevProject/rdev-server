@@ -1,29 +1,33 @@
 extern crate ws;
-use self::ws::listen;
-pub struct Server{
-    listen_ip: String,
-    listen_port: String,
-    ssl: bool,
-    max_connections: i16
+use self::ws::*;
+
+
+
+
+pub struct ServerConnection{
+    pub out: Sender
 }
 
-impl Server {
-    pub fn new() -> Server{
-         Server{
-             listen_ip: "0.0.0.0".to_string(),
-             listen_port: "3395".to_string(),
-             ssl: false,
-             max_connections: 32
-         }
-     }
-
-   pub fn await_incoming_connection(self,f_handle: String) -> (){
-         listen("127.0.0.1:3012", |out| {
-             move |msg|{
-             out.send()
-             }
-      
-             
-        });
-     }
+impl ServerConnection{
+       pub fn new_connection() -> Result<()>{
+            let x = listen("127.0.0.1:1111", |out|{
+                    ServerConnection{ out: out}
+            });
+            x
+        }
 }
+
+
+
+ impl Handler for ServerConnection {
+        fn on_message(&mut self, msg: Message) -> Result<()> {
+            println!("Server got message '{}'. ", msg);
+            self.out.send(Message::from("Test Return Message".to_string()))
+        }
+
+        fn on_close(&mut self, code: CloseCode, reason: &str) {
+            println!("WebSocket closing for ({:?}) {}", code, reason);
+            println!("Shutting down server after first connection closes.");
+            self.out.shutdown().unwrap();
+        }
+ }
