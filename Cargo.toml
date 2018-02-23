@@ -1,0 +1,7 @@
+[package]
+name = "rdev-server"
+version = "0.1.0"
+authors = ["Justthetip"]
+
+[dependencies]
+ws = "0.7.3"
