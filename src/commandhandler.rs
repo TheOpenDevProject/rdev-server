@@ -1,28 +1,23 @@
 use std::collections::HashMap;
-
-type Command = fn() -> ();
+#[derive(Debug)]
 pub struct CommandHandler {
-    commands: HashMap<i32, Command>
+   
 }
-
 impl CommandHandler {
-     pub fn init() -> CommandHandler{
-         let cmd_map = HashMap::new();
-         
-         cmd_map.insert(1, fn() -> (){
-               println!("Open File Requested");
-         });
-           
 
-         CommandHandler{
-             commands: cmd_map
-         }
+     pub fn init() -> CommandHandler{
+         CommandHandler{}
      }
 
-     pub fn handle_command(&mut self, command: i32){
-         if self.commands.contains_key(command){
-            let fnc = self.commands.get(command);
-            fnc();
-         }
+     pub fn handle_command(&mut self, command: &str){
+         let command_fnc = match command {
+             "open" => Box::new(||{
+                 println!("Open File Command Handled");
+             }) as Box<Fn()>,
+             &_ => Box::new(||{
+                 println!("Open File Command Handled");
+             }) as Box<Fn()>
+         };
+         command_fnc();
      }
 }
