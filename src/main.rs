@@ -3,6 +3,8 @@ use self::ws::*;
 
 mod server;
 mod filehandle;
+mod commandhandler;
+use commandhandler::CommandHandler;
 use server::{ServerConnection};
 use filehandle::FileHandle;
 use std::thread;
@@ -12,7 +14,14 @@ fn main() {
     //let test_file = FileHandle::open("test_files/sample.txt".to_string());
     //println!("{:?}", test_file.read_out_buffer());
 
+    //Test Handle commands
+    let x = CommandHandler::init();
+    x.handle_command(1);
+
+
+    //Start the server on a separate thread from main()
+
     thread::spawn(move ||{
-         let x = ServerConnection::new_connection();
+         ServerConnection::new_connection();
     }).join();
 }
