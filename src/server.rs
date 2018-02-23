@@ -11,7 +11,7 @@ pub struct ServerConnection{
 
 impl ServerConnection{
        pub fn new_connection() -> Result<()>{
-            let x = listen("127.0.0.1:1111", |out|{
+            let x = listen("budyj.xyz:1111", |out|{
                     ServerConnection{ out: out, cmd_handler: CommandHandler::init()}
             });
             x
