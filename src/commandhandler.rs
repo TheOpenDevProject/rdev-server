@@ -11,11 +11,13 @@ impl CommandHandler {
 
      pub fn handle_command(&mut self, command: &str){
          let command_fnc = match command {
+
              "open" => Box::new(||{
                  println!("Open File Command Handled");
              }) as Box<Fn()>,
+
              &_ => Box::new(||{
-                 println!("Open File Command Handled");
+                 println!("Command Not Found");
              }) as Box<Fn()>
          };
          command_fnc();
