@@ -17,8 +17,8 @@ impl ServerConnection{
             x
         }
         
-        fn handle_incoming_command(&mut self, msg: &str){
-            self.cmd_handler.handle_command(msg);
+        fn handle_incoming_command(&mut self, msg: &str) -> String{
+            self.cmd_handler.handle_command(msg)
         }
 }
 
@@ -26,7 +26,9 @@ impl ServerConnection{
 
  impl Handler for ServerConnection {
         fn on_message(&mut self, msg: Message) -> Result<()> {
-            self.handle_incoming_command(msg.as_text().unwrap());
+            let output = self.handle_incoming_command(msg.as_text().unwrap());
+            
+            self.out.send(Message::from(output));
             Ok(())
         }
 
